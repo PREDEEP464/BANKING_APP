@@ -1,34 +1,33 @@
 package BankingManagementSystem;
 
-import java.sql.*;
-import java.util.Scanner;
+import com.mongodb.client.*;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+
+import org.bson.Document;
 
 import java.util.Scanner;
-
-import static java.lang.Class.forName;
 
 public class BankingApp {
-    private static final String url = "jdbc:mysql://localhost:3306/banking_system";
-    private static final String username = "root";
-    private static final String password = "Admin@123";
+    private static final String mongoDbUrl = "mongodb://localhost:27017";
+    private static final String databaseName = "banking_system";
 
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        }catch (ClassNotFoundException e){
-            System.out.println(e.getMessage());
-        }
-        try{
-            Connection connection = DriverManager.getConnection(url, username, password);
-            Scanner scanner =  new Scanner(System.in);
-            User user = new User(connection, scanner);
-            Accounts accounts = new Accounts(connection, scanner);
-            AccountManager accountManager = new AccountManager(connection, scanner);
+    private static final MongoClient mongoClient = MongoClients.create(mongoDbUrl);
+    private static final MongoDatabase database = mongoClient.getDatabase(databaseName);
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        try {
+            // Initialize the necessary objects (User, Accounts, AccountManager)
+            User user = new User(database, scanner);
+            Accounts accounts = new Accounts(database, scanner);
+            AccountManager accountManager = new AccountManager(database, scanner);
 
             String email;
             long account_number;
 
-            while(true){
+            while (true) {
                 System.out.println("*** WELCOME TO BANKING SYSTEM ***");
                 System.out.println();
                 System.out.println("1. Register");
@@ -36,29 +35,29 @@ public class BankingApp {
                 System.out.println("3. Exit");
                 System.out.println("Enter your choice: ");
                 int choice1 = scanner.nextInt();
-                switch (choice1){
+                switch (choice1) {
                     case 1:
                         user.register();
                         break;
                     case 2:
                         email = user.login();
-                        if(email!=null){
+                        if (email != null) {
                             System.out.println();
                             System.out.println("User Logged In!");
-                            if(!accounts.account_exist(email)){
+                            if (!accounts.accountExist(email)) {
                                 System.out.println();
                                 System.out.println("1. Open a new Bank Account");
                                 System.out.println("2. Exit");
-                                if(scanner.nextInt() == 1) {
-                                    account_number = accounts.open_account(email);
+                                if (scanner.nextInt() == 1) {
+                                    account_number = accounts.openAccount(email);
                                     System.out.println("Account Created Successfully");
                                     System.out.println("Your Account Number is: " + account_number);
-                                }else{
+                                } else {
                                     break;
                                 }
 
                             }
-                            account_number = accounts.getAccount_number(email);
+                            account_number = accounts.getAccountNumber(email);
                             int choice2 = 0;
                             while (choice2 != 5) {
                                 System.out.println();
@@ -71,13 +70,13 @@ public class BankingApp {
                                 choice2 = scanner.nextInt();
                                 switch (choice2) {
                                     case 1:
-                                        accountManager.debit_money(account_number);
+                                        accountManager.debitMoney(account_number);
                                         break;
                                     case 2:
-                                        accountManager.credit_money(account_number);
+                                        accountManager.creditMoney(account_number);
                                         break;
                                     case 3:
-                                        accountManager.transfer_money(account_number);
+                                        accountManager.transferMoney(account_number);
                                         break;
                                     case 4:
                                         accountManager.getBalance(account_number);
@@ -90,10 +89,10 @@ public class BankingApp {
                                 }
                             }
 
-                        }
-                        else{
+                        } else {
                             System.out.println("Incorrect Email or Password!");
                         }
+                        break;
                     case 3:
                         System.out.println("THANK YOU FOR USING BANKING SYSTEM!!!");
                         System.out.println("Exiting System!");
@@ -103,8 +102,12 @@ public class BankingApp {
                         break;
                 }
             }
-        }catch (SQLException e){
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            // Close resources
+            mongoClient.close();
+            scanner.close();
         }
     }
 }
