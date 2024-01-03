@@ -1,7 +1,9 @@
 package BankingManagementSystem;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
 import java.util.Scanner;
@@ -48,7 +50,6 @@ public class Accounts {
         }
         throw new RuntimeException("Account Already Exists");
     }
-
     public long getAccountNumber(String email) {
         try {
             MongoCollection<Document> accountsCollection = database.getCollection("accounts");
@@ -97,6 +98,18 @@ public class Accounts {
             e.printStackTrace();
             System.err.println("Exception while checking account existence: " + e.getMessage());
             return false; // Return false to indicate failure
+        }
+    }
+
+    public void fetchUserAccounts(String userEmail) {
+        MongoCollection<Document> accountsCollection = database.getCollection("accounts");
+
+        MongoCursor<Document> cursor = accountsCollection.find(Filters.eq("email", userEmail)).iterator();
+
+        System.out.println("Existing Accounts for User: " + userEmail);
+        while (cursor.hasNext()) {
+            Document account = cursor.next();
+            System.out.println("Account Number: " + account.getLong("account_number"));
         }
     }
 

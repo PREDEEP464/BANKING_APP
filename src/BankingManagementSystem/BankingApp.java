@@ -42,21 +42,26 @@ public class BankingApp {
                     case 2:
                         email = user.login();
                         if (email != null) {
-                            System.out.println();
                             System.out.println("User Logged In!");
                             if (!accounts.accountExist(email)) {
                                 System.out.println();
                                 System.out.println("1. Open a new Bank Account");
-                                System.out.println("2. Exit");
-                                if (scanner.nextInt() == 1) {
+                                System.out.println("2. Fetch User Accounts"); // Changed option to 2
+                                System.out.println("3. Exit");
+                                int choiceAccount = scanner.nextInt(); // Read user choice once
+
+                                if (choiceAccount == 1) {
                                     account_number = accounts.openAccount(email);
                                     System.out.println("Account Created Successfully");
                                     System.out.println("Your Account Number is: " + account_number);
+                                } else if (choiceAccount == 2) {
+                                    // Fetch and display existing user accounts
+                                    accounts.fetchUserAccounts(email);
                                 } else {
                                     break;
                                 }
-
                             }
+
                             account_number = accounts.getAccountNumber(email);
                             int choice2 = 0;
                             while (choice2 != 5) {
