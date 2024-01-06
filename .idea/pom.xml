@@ -1,7 +1,24 @@
-<dependency>
-    <groupId>org.mongodb</groupId>
-    <artifactId>mongodb-driver-sync</artifactId>
-    <version>3.4.2</version> <!-- Use the latest version -->
-</dependency>
+<dependencies>
+    <!-- MongoDB Java driver -->
+    <dependency>
+        <groupId>org.mongodb</groupId>
+        <artifactId>mongodb-driver-sync</artifactId>
+        <version>4.4.3</version> <!-- Use the latest version -->
+    </dependency>
 
+    <!-- JavaFX dependencies -->
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-controls</artifactId>
+        <version>21.0.1</version> <!-- Use the version compatible with your Java version -->
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-fxml</artifactId>
+        <version>21.0.1</version> <!-- Use the version compatible with your Java version -->
+        <scope>compile</scope>
+    </dependency>
 
+    <!-- Add other dependencies as needed -->
+</dependencies>

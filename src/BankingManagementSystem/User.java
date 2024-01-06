@@ -15,15 +15,7 @@ public class User {
         this.scanner = scanner;
     }
 
-    public void register() {
-        scanner.nextLine();
-        System.out.print("Full Name: ");
-        String fullName = scanner.nextLine();
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
-        System.out.print("Password: ");
-        String password = scanner.nextLine();
-
+    public void register(String fullName, String email, String password) {
         if (userExists(email)) {
             System.out.println("User Already Exists for this Email Address!!");
             return;
@@ -32,12 +24,10 @@ public class User {
         try {
             MongoCollection<Document> usersCollection = database.getCollection("users");
 
-            // Create a new document for user registration
             Document userDocument = new Document("full_name", fullName)
                     .append("email", email)
                     .append("password", password);
 
-            // Insert the document into the "users" collection
             usersCollection.insertOne(userDocument);
 
             System.out.println("Registration Successful!");
@@ -46,17 +36,11 @@ public class User {
         }
     }
 
-    public String login() {
-        scanner.nextLine();
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
-        System.out.print("Password: ");
-        String password = scanner.nextLine();
+    public String login(String email,String password) {
 
         try {
             MongoCollection<Document> usersCollection = database.getCollection("users");
 
-            // Check if the user exists in the "users" collection
             Document query = new Document("email", email)
                     .append("password", password);
             Document userDocument = usersCollection.find(query).first();
@@ -77,7 +61,6 @@ public class User {
         try {
             MongoCollection<Document> usersCollection = database.getCollection("users");
 
-            // Check if the user exists in the "users" collection
             Document query = new Document("email", email);
             Document userDocument = usersCollection.find(query).first();
 
