@@ -24,6 +24,7 @@ public class BankingApp extends Application {
     private static final MongoDatabase database = mongoClient.getDatabase(databaseName);
 
     private static final Scanner scanner = new Scanner(System.in);
+    private Stage dashboardStage;
 
     public static void main(String[] args) {
         try{
@@ -306,6 +307,7 @@ public class BankingApp extends Application {
                     alert1.setHeaderText(null);
                     alert1.setContentText("New Balance:" + newb);
                     alert1.showAndWait();
+                    openaccStage.close();
                 }
                 if(newb==0){
                     Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
@@ -358,6 +360,7 @@ public class BankingApp extends Application {
                     alert1.setHeaderText(null);
                     alert1.setContentText("New Balance:" + newb);
                     alert1.showAndWait();
+                    openaccStage.close();
                 }
                 if(newb==0){
                     Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
@@ -413,8 +416,9 @@ public class BankingApp extends Application {
                     Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
                     alert1.setTitle("Transfer Success");
                     alert1.setHeaderText(null);
-                    alert1.setContentText("Successfully Transferred");
+                    alert1.setContentText(amount1+" Successfully Transferred");
                     alert1.showAndWait();
+                    openaccStage.close();
                 }
                 if(a==0){
                     Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
