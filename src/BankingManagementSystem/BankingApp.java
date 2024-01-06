@@ -416,7 +416,7 @@ public class BankingApp extends Application {
                     Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
                     alert1.setTitle("Transfer Success");
                     alert1.setHeaderText(null);
-                    alert1.setContentText(amount1+" Successfully Transferred");
+                    alert1.setContentText("Rs."+amount1+" Successfully Transferred");
                     alert1.showAndWait();
                     openaccStage.close();
                 }
