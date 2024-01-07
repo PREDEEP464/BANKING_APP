@@ -7,9 +7,21 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.effect.Glow;
+import javafx.scene.input.MouseEvent;
+
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
@@ -24,7 +36,10 @@ public class BankingApp extends Application {
     private static final MongoDatabase database = mongoClient.getDatabase(databaseName);
 
     private static final Scanner scanner = new Scanner(System.in);
-    private Stage dashboardStage;
+
+    Image backgroundImage = new Image(getClass().getResourceAsStream("New.jpg"));
+    BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+
 
     public static void main(String[] args) {
         try{
@@ -40,46 +55,86 @@ public class BankingApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            Image icon = new Image(getClass().getResourceAsStream("ICON.png"));
-            primaryStage.getIcons().add(icon);
-            User user = new User(database, scanner);
-            Accounts accounts = new Accounts(database, scanner);
-            AccountManager accountManager = new AccountManager(database, scanner);
+                Image icon = new Image(getClass().getResourceAsStream("ICON.png"));
+                primaryStage.getIcons().add(icon);
+                User user = new User(database, scanner);
+                Accounts accounts = new Accounts(database, scanner);
+                AccountManager accountManager = new AccountManager(database, scanner);
 
-            GridPane grid = new GridPane();
-            grid.setAlignment(javafx.geometry.Pos.CENTER);
-            grid.setHgap(10);
-            grid.setVgap(10);
-            grid.setPadding(new Insets(25, 25, 25, 25));
+                GridPane grid = new GridPane();
+                grid.setAlignment(javafx.geometry.Pos.CENTER);
+                grid.setHgap(10);
+                grid.setVgap(40);
+                grid.setPadding(new Insets(25, 25, 25, 25));
 
-            Label welcomeLabel = new Label("WELCOME TO BANKING SYSTEM");
-            welcomeLabel.setStyle("-fx-text-fill: black; -fx-font-size: 18px; -fx-padding: 10px;");
-            grid.add(welcomeLabel, 0, 0);
+                Image backgroundImage = new Image(getClass().getResourceAsStream("New.jpg"));
+                BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+                grid.setBackground(new Background(background));
 
-            Button registerButton = new Button("Register");
-            Button loginButton = new Button("Login");
-            Button exitButton = new Button("Exit");
+                grid.setAlignment(Pos.CENTER); 
 
-            registerButton.setOnAction(e -> handleRegister(user));
-            loginButton.setOnAction(e -> handleLogin(user, accounts, accountManager));
-            exitButton.setOnAction(e -> {
+                ColumnConstraints columnConstraints = new ColumnConstraints();
+                columnConstraints.setHalignment(HPos.CENTER);
+                grid.getColumnConstraints().addAll(columnConstraints, columnConstraints, columnConstraints);
+
+                Text welcomeText = new Text("WELCOME TO BANKING SYSTEM");
+                welcomeText.setFill(javafx.scene.paint.Color.WHITE);
+                welcomeText.setFont(javafx.scene.text.Font.font("Frutiger", FontWeight.BOLD, 48));
+                welcomeText.setStyle("-fx-stroke: black; -fx-stroke-width: 2px;");
+                grid.add(welcomeText, 0, 0, 3, 1);
+
+                HBox buttonRow = new HBox(40); 
+                buttonRow.setAlignment(javafx.geometry.Pos.CENTER);
+                Button registerButton = new Button("Register");
+                Button loginButton = new Button("Login");
+                Button exitButton = new Button("Exit");
+                buttonRow.getChildren().addAll(registerButton, loginButton, exitButton);
+
+                double buttonWidth = 250.0;
+                registerButton.setPrefWidth(buttonWidth);
+                loginButton.setPrefWidth(buttonWidth);
+                exitButton.setPrefWidth(buttonWidth);
+
+                registerButton.setStyle("-fx-background-color: #4CAF50; -fx-font-weight: bold; -fx-text-fill: white;-fx-font-size: 26px;");
+                loginButton.setStyle("-fx-background-color: #2196F3; -fx-font-weight: bold; -fx-text-fill: white;-fx-font-size: 26px;");
+                exitButton.setStyle("-fx-background-color: #f44336; -fx-font-weight: bold; -fx-text-fill: white;-fx-font-size: 26px;");
+                registerButton.setOnAction(e -> handleRegister(user));
+                loginButton.setOnAction(e -> handleLogin(user, accounts, accountManager));
+                exitButton.setOnAction(e -> {
                 System.out.println("THANK YOU FOR USING BANKING SYSTEM!!!");
                 System.out.println("Exiting System!");
                 primaryStage.close();
             });
+            VBox buttonList = new VBox(20);
+            buttonList.setAlignment(javafx.geometry.Pos.CENTER);
+            buttonList.getChildren().addAll(registerButton, loginButton, exitButton);
 
-            grid.add(registerButton, 0, 1);
-            grid.add(loginButton, 0, 2);
-            grid.add(exitButton, 0, 3);
-
-            GridPane.setHalignment(registerButton, javafx.geometry.HPos.CENTER);
-            GridPane.setHalignment(loginButton, javafx.geometry.HPos.CENTER);
-            GridPane.setHalignment(exitButton, javafx.geometry.HPos.CENTER);
-
-            Scene scene = new Scene(grid, 400, 300);
+            grid.add(buttonList, 0, 1, 3, 1);
+            Scene scene = new Scene(grid, 1280, 730);
 
             primaryStage.setTitle("Banking System");
             primaryStage.setScene(scene);
+
+        
+            registerButton.setOnMouseEntered((MouseEvent e) -> {
+                registerButton.setEffect(new Glow());
+            });
+            loginButton.setOnMouseEntered((MouseEvent e) -> {
+                loginButton.setEffect(new Glow());
+            });
+            exitButton.setOnMouseEntered((MouseEvent e) -> {
+                exitButton.setEffect(new Glow());
+            });
+
+            registerButton.setOnMouseExited((MouseEvent e) -> {
+                registerButton.setEffect(null);
+            });
+            loginButton.setOnMouseExited((MouseEvent e) -> {
+                loginButton.setEffect(null);
+            });
+            exitButton.setOnMouseExited((MouseEvent e) -> {
+                exitButton.setEffect(null);
+            });
 
             primaryStage.show();
         } catch (Exception e) {
@@ -91,16 +146,28 @@ public class BankingApp extends Application {
         GridPane registerGrid = new GridPane();
         registerGrid.setAlignment(javafx.geometry.Pos.CENTER);
         registerGrid.setHgap(10);
-        registerGrid.setVgap(10);
+        registerGrid.setVgap(35); 
         registerGrid.setPadding(new Insets(25, 25, 25, 25));
-
+    
         Label nameLabel = new Label("Full Name:");
+        nameLabel.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
         TextField nameTextField = new TextField();
+        nameTextField.setStyle("-fx-font-size: 19px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;"); 
+    
         Label emailLabel = new Label("Email:");
+        emailLabel.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
         TextField emailTextField = new TextField();
+        emailTextField.setStyle("-fx-font-size: 19px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
+    
         Label passwordLabel = new Label("Password:");
+        passwordLabel.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
         PasswordField passwordField = new PasswordField();
+        passwordField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
+    
         Button registerButton = new Button("Register");
+        registerButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+        registerButton.setOnMouseEntered((MouseEvent event) -> registerButton.setEffect(new Glow()));
+        registerButton.setOnMouseExited((MouseEvent event) -> registerButton.setEffect(null));
 
         registerGrid.add(nameLabel, 0, 0);
         registerGrid.add(nameTextField, 1, 0);
@@ -109,51 +176,72 @@ public class BankingApp extends Application {
         registerGrid.add(passwordLabel, 0, 2);
         registerGrid.add(passwordField, 1, 2);
         registerGrid.add(registerButton, 1, 3);
-
-        Scene registerScene = new Scene(registerGrid, 300, 250);
-
+    
+        Image backgroundImage = new Image(getClass().getResourceAsStream("New.jpg"));
+        BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        registerGrid.setBackground(new Background(background));
+    
+        Scene registerScene = new Scene(registerGrid, 1280, 730);
+    
         Stage registerStage = new Stage();
         registerStage.setTitle("Register");
         registerStage.setScene(registerScene);
         registerStage.show();
-
+    
         registerButton.setOnAction(e -> {
             String fullName = nameTextField.getText();
             String email = emailTextField.getText();
             String password = passwordField.getText();
-
+    
             if (validateRegisterInput(fullName, email, password)) {
                 user.register(fullName, email, password);
-
+    
                 registerStage.close();
-
+    
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Registration Successful");
                 alert.setHeaderText(null);
                 alert.setContentText("Registration successful! You can now log in.");
+                alert.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
+                alert.getDialogPane().setPrefWidth(600);
+                alert.getDialogPane().setPrefHeight(200);
                 alert.showAndWait();
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Registration Error");
                 alert.setHeaderText(null);
                 alert.setContentText("Invalid input. Please check your information and try again.");
+                alert.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
+                alert.getDialogPane().setPrefWidth(600);
+                alert.getDialogPane().setPrefHeight(200);
                 alert.showAndWait();
             }
         });
     }
+    
 
     private void handleLogin(User user, Accounts accounts, AccountManager accountManager) {
         GridPane loginGrid = new GridPane();
         loginGrid.setAlignment(javafx.geometry.Pos.CENTER);
-        loginGrid.setHgap(10);
-        loginGrid.setVgap(10);
+        loginGrid.setHgap(20);
+        loginGrid.setVgap(40);
         loginGrid.setPadding(new Insets(25, 25, 25, 25));
 
+        loginGrid.setBackground(new Background(background));
+
         Label emailLabel = new Label("Email:");
+        emailLabel.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
         TextField emailTextField = new TextField();
+        emailTextField.setStyle("-fx-font-size: 19px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
         Label passwordLabel = new Label("Password:");
+        passwordLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;");
         PasswordField passwordField = new PasswordField();
+        passwordField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
         Button loginButton = new Button("Login");
+        loginButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+        loginButton.setOnMouseEntered((MouseEvent event) -> loginButton.setEffect(new Glow()));
+        loginButton.setOnMouseExited((MouseEvent event) -> loginButton.setEffect(null));
+
 
         loginGrid.add(emailLabel, 0, 0);
         loginGrid.add(emailTextField, 1, 0);
@@ -161,7 +249,7 @@ public class BankingApp extends Application {
         loginGrid.add(passwordField, 1, 1);
         loginGrid.add(loginButton, 1, 2);
 
-        Scene loginScene = new Scene(loginGrid, 300, 200);
+        Scene loginScene = new Scene(loginGrid, 1280, 730);
 
         Stage loginStage = new Stage();
         loginStage.setTitle("Login");
@@ -180,7 +268,11 @@ public class BankingApp extends Application {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Login Success");
         alert.setHeaderText(null);
-        alert.setContentText("Welcome, " + loggedInUser + "!");
+        alert.setContentText("Welcome, " + loggedInUser + "!"); 
+
+        alert.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
+        alert.getDialogPane().setPrefWidth(600);
+        alert.getDialogPane().setPrefHeight(200);
         alert.showAndWait();
 
         loginStage.close();
@@ -189,28 +281,56 @@ public class BankingApp extends Application {
         dashboardStage.setTitle("User Dashboard");
 
         Button openAccountButton = new Button("Open Account");
+        openAccountButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+        openAccountButton.setOnMouseEntered((MouseEvent event) -> openAccountButton.setEffect(new Glow()));
+        openAccountButton.setOnMouseExited((MouseEvent event) -> openAccountButton.setEffect(null));
+        
         Button checkBalanceButton = new Button("Check Balance");
+        checkBalanceButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+        checkBalanceButton.setOnMouseEntered((MouseEvent event) -> checkBalanceButton.setEffect(new Glow()));
+        checkBalanceButton.setOnMouseExited((MouseEvent event) -> checkBalanceButton.setEffect(null));
+        
         Button creditButton = new Button("Credit Money");
+        creditButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+        creditButton.setOnMouseEntered((MouseEvent event) -> creditButton.setEffect(new Glow()));
+        creditButton.setOnMouseExited((MouseEvent event) -> creditButton.setEffect(null));
+        
         Button debitButton = new Button("Debit Money");
-        Button transferButton = new Button("Transfer Money");
+        debitButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+        debitButton.setOnMouseEntered((MouseEvent event) -> debitButton.setEffect(new Glow()));
+        debitButton.setOnMouseExited((MouseEvent event) -> debitButton.setEffect(null));
+        
+        Button transferButton = new Button("Transfer");
+        transferButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+        transferButton.setOnMouseEntered((MouseEvent event) -> transferButton.setEffect(new Glow()));
+        transferButton.setOnMouseExited((MouseEvent event) -> transferButton.setEffect(null));
+        
         Button backButton = new Button("Back");
+        backButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+        backButton.setOnMouseEntered((MouseEvent event) -> backButton.setEffect(new Glow()));
+        backButton.setOnMouseExited((MouseEvent event) -> backButton.setEffect(null));
 
-        VBox vbox = new VBox(10);
+        VBox vbox = new VBox(50);
         vbox.getChildren().addAll(openAccountButton, checkBalanceButton, creditButton, debitButton, transferButton, backButton);
         vbox.setAlignment(Pos.CENTER);
 
-        Scene dashboardScene = new Scene(vbox, 400, 300);
+        BackgroundImage dashboardBackground = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        vbox.setBackground(new Background(dashboardBackground));
+
+        Scene dashboardScene = new Scene(vbox, 1280, 730);
         dashboardStage.setScene(dashboardScene);
         dashboardStage.show();
+        
 
         openAccountButton.setOnAction(event -> {
             Stage openaccStage = new Stage();
             openaccStage.setTitle("Open Account");
             GridPane OAGrid = new GridPane();
             OAGrid.setAlignment(javafx.geometry.Pos.CENTER);
-            OAGrid.setHgap(10);
-            OAGrid.setVgap(10);
+            OAGrid.setHgap(20);
+            OAGrid.setVgap(50);
             OAGrid.setPadding(new Insets(25, 25, 25, 25));
+            OAGrid.setBackground(new Background(background));
 
             Label accName = new Label("Name:");
             TextField accNameField = new TextField();
@@ -220,6 +340,21 @@ public class BankingApp extends Application {
             PasswordField pinField= new PasswordField();
             Button sumbitB = new Button("submit");
 
+    
+            accName.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
+            accNameField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
+            
+            amount.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
+            amountField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
+
+            pin.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
+            pinField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
+
+            sumbitB.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+            sumbitB.setOnMouseEntered(mouseEvent -> sumbitB.setEffect(new Glow()));
+            sumbitB.setOnMouseExited(mouseEvent -> sumbitB.setEffect(null));
+
+            
             OAGrid.add(accName, 0, 0);  
             OAGrid.add(accNameField, 1, 0);
             OAGrid.add(amount, 0, 1);
@@ -230,7 +365,7 @@ public class BankingApp extends Application {
 
             GridPane.setHalignment(sumbitB, HPos.CENTER);
 
-            Scene openaccScene = new Scene(OAGrid,400,300);
+            Scene openaccScene = new Scene(OAGrid,1280,730);
             openaccStage.setScene(openaccScene);
             openaccStage.show();
 
@@ -245,7 +380,11 @@ public class BankingApp extends Application {
                 alert1.setTitle("Account creation Success");
                 alert1.setHeaderText(null);
                 alert1.setContentText("Welcome, " + accNo + "!");
+                alert.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
+                alert1.getDialogPane().setPrefWidth(600);
+                alert1.getDialogPane().setPrefHeight(200);
                 alert1.showAndWait();
+                openaccStage.close();
                 
             });
         });
@@ -258,12 +397,18 @@ public class BankingApp extends Application {
                 alert1.setTitle("Account Balance");
                 alert1.setHeaderText(null);
                 alert1.setContentText("Balance:" + balance);
+                alert1.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
+                alert1.getDialogPane().setPrefWidth(600);
+                alert1.getDialogPane().setPrefHeight(200);
                 alert1.showAndWait();
             } else {
                 Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
                 alert1.setTitle("Account Balance");
                 alert1.setHeaderText(null);
                 alert1.setContentText("Invalid Account Number");
+                alert1.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
+                alert1.getDialogPane().setPrefWidth(600);
+                alert1.getDialogPane().setPrefHeight(200);
                 alert1.showAndWait();
             }
         });
@@ -274,14 +419,26 @@ public class BankingApp extends Application {
             GridPane OAGrid = new GridPane();
             OAGrid.setAlignment(javafx.geometry.Pos.CENTER);
             OAGrid.setHgap(10);
-            OAGrid.setVgap(10);
+            OAGrid.setVgap(40);
             OAGrid.setPadding(new Insets(25, 25, 25, 25));
+            OAGrid.setBackground(new Background(background));
 
             Label amount = new Label("Amount:");
             TextField amountField = new TextField();
             Label pin = new Label("pin");
             PasswordField pinField= new PasswordField();
             Button sumbitB = new Button("submit");
+
+            amount.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
+            amountField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
+
+            pin.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
+            pinField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
+
+            sumbitB.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+            sumbitB.setOnMouseEntered(mouseEvent -> sumbitB.setEffect(new Glow()));
+            sumbitB.setOnMouseExited(mouseEvent -> sumbitB.setEffect(null));
+
 
             OAGrid.add(amount, 0, 0);  
             OAGrid.add(amountField, 1, 0);
@@ -291,7 +448,7 @@ public class BankingApp extends Application {
 
             GridPane.setHalignment(sumbitB, HPos.CENTER);
 
-            Scene openaccScene = new Scene(OAGrid,400,300);
+            Scene openaccScene = new Scene(OAGrid,1280,730);
             openaccStage.setScene(openaccScene);
             openaccStage.show();
 
@@ -306,6 +463,9 @@ public class BankingApp extends Application {
                     alert1.setTitle("Credit Success");
                     alert1.setHeaderText(null);
                     alert1.setContentText("New Balance:" + newb);
+                    alert1.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
+                    alert1.getDialogPane().setPrefWidth(600);
+                    alert1.getDialogPane().setPrefHeight(200);
                     alert1.showAndWait();
                     openaccStage.close();
                 }
@@ -314,6 +474,9 @@ public class BankingApp extends Application {
                     alert1.setTitle("Credit Failure");
                     alert1.setHeaderText(null);
                     alert1.setContentText(amount1+" cannot be credited");
+                    alert1.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
+                    alert1.getDialogPane().setPrefWidth(600);
+                    alert1.getDialogPane().setPrefHeight(200);
                     alert1.showAndWait();
                 }
                 
@@ -327,14 +490,26 @@ public class BankingApp extends Application {
             GridPane OAGrid = new GridPane();
             OAGrid.setAlignment(javafx.geometry.Pos.CENTER);
             OAGrid.setHgap(10);
-            OAGrid.setVgap(10);
+            OAGrid.setVgap(40);
             OAGrid.setPadding(new Insets(25, 25, 25, 25));
+            OAGrid.setBackground(new Background(background));
 
             Label amount = new Label("Amount:");
             TextField amountField = new TextField();
             Label pin = new Label("pin");
             PasswordField pinField= new PasswordField();
             Button sumbitB = new Button("submit");
+
+            amount.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
+            amountField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
+
+            pin.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
+            pinField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
+
+            sumbitB.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+            sumbitB.setOnMouseEntered(mouseEvent -> sumbitB.setEffect(new Glow()));
+            sumbitB.setOnMouseExited(mouseEvent -> sumbitB.setEffect(null));
+
 
             OAGrid.add(amount, 0, 0);  
             OAGrid.add(amountField, 1, 0);
@@ -344,7 +519,7 @@ public class BankingApp extends Application {
 
             GridPane.setHalignment(sumbitB, HPos.CENTER);
 
-            Scene openaccScene = new Scene(OAGrid,400,300);
+            Scene openaccScene = new Scene(OAGrid,1280,730);
             openaccStage.setScene(openaccScene);
             openaccStage.show();
 
@@ -359,6 +534,9 @@ public class BankingApp extends Application {
                     alert1.setTitle("Debit Success");
                     alert1.setHeaderText(null);
                     alert1.setContentText("New Balance:" + newb);
+                    alert1.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
+                    alert1.getDialogPane().setPrefWidth(600);
+                    alert1.getDialogPane().setPrefHeight(200);
                     alert1.showAndWait();
                     openaccStage.close();
                 }
@@ -366,7 +544,10 @@ public class BankingApp extends Application {
                     Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
                     alert1.setTitle("Debit Failure");
                     alert1.setHeaderText(null);
+                    alert1.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
                     alert1.setContentText("Insufficient Balance");
+                    alert1.getDialogPane().setPrefWidth(600);
+                    alert1.getDialogPane().setPrefHeight(200);
                     alert1.showAndWait();
                 }
                 
@@ -379,8 +560,9 @@ public class BankingApp extends Application {
             GridPane OAGrid = new GridPane();
             OAGrid.setAlignment(javafx.geometry.Pos.CENTER);
             OAGrid.setHgap(10);
-            OAGrid.setVgap(10);
+            OAGrid.setVgap(30);
             OAGrid.setPadding(new Insets(25, 25, 25, 25));
+            OAGrid.setBackground(new Background(background));
 
             Label amount = new Label("Amount:");
             TextField amountField = new TextField();
@@ -389,6 +571,19 @@ public class BankingApp extends Application {
             Label pin = new Label("pin");
             PasswordField pinField= new PasswordField();
             Button sumbitB = new Button("submit");
+
+            amount.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
+            amountField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
+
+            name.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
+            nameField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
+
+            pin.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
+            pinField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
+
+            sumbitB.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+            sumbitB.setOnMouseEntered(mouseEvent -> sumbitB.setEffect(new Glow()));
+            sumbitB.setOnMouseExited(mouseEvent -> sumbitB.setEffect(null));
 
             OAGrid.add(amount, 0, 0);  
             OAGrid.add(amountField, 1, 0);
@@ -400,7 +595,7 @@ public class BankingApp extends Application {
 
             GridPane.setHalignment(sumbitB, HPos.CENTER);
 
-            Scene openaccScene = new Scene(OAGrid,400,300);
+            Scene openaccScene = new Scene(OAGrid,1280,730);
             openaccStage.setScene(openaccScene);
             openaccStage.show();
 
@@ -417,14 +612,19 @@ public class BankingApp extends Application {
                     alert1.setTitle("Transfer Success");
                     alert1.setHeaderText(null);
                     alert1.setContentText("Rs."+amount1+" Successfully Transferred");
+                    alert1.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
+                    alert1.getDialogPane().setPrefWidth(600);
+                    alert1.getDialogPane().setPrefHeight(200);
                     alert1.showAndWait();
-                    openaccStage.close();
                 }
                 if(a==0){
                     Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
                     alert1.setTitle("Transaction Failure");
                     alert1.setHeaderText(null);
                     alert1.setContentText("Insufficient Balance");
+                    alert.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
+                    alert1.getDialogPane().setPrefWidth(600);
+                    alert1.getDialogPane().setPrefHeight(200);
                     alert1.showAndWait();
                 }
             });
@@ -439,6 +639,9 @@ public class BankingApp extends Application {
         alert.setTitle("Login Error");
         alert.setHeaderText(null);
         alert.setContentText("Invalid email or password. Please try again.");
+        alert.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
+        alert.getDialogPane().setPrefWidth(600);
+        alert.getDialogPane().setPrefHeight(200);
         alert.showAndWait();
     }
 });
