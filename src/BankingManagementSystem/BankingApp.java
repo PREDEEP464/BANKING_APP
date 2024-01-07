@@ -615,7 +615,9 @@ public class BankingApp extends Application {
                     alert1.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
                     alert1.getDialogPane().setPrefWidth(600);
                     alert1.getDialogPane().setPrefHeight(200);
+                    openaccStage.setScene(openaccScene);
                     alert1.showAndWait();
+                    openaccStage.close();
                 }
                 if(a==0){
                     Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
