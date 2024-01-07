@@ -52,7 +52,7 @@ public class BankingApp extends Application {
         }
     }
 
-    
+
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -647,7 +647,6 @@ public class BankingApp extends Application {
     }
 });
     }
-
     private boolean validateRegisterInput(String fullName, String email, String password) {
         return !fullName.isEmpty() && !email.isEmpty() && !password.isEmpty();
     }
