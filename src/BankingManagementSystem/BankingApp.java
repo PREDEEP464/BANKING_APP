@@ -239,10 +239,9 @@ public class BankingApp extends Application {
         PasswordField passwordField = new PasswordField();
         passwordField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
         Button loginButton = new Button("Login");
-        loginButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+        loginButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
         loginButton.setOnMouseEntered((MouseEvent event) -> loginButton.setEffect(new Glow()));
         loginButton.setOnMouseExited((MouseEvent event) -> loginButton.setEffect(null));
-
 
         loginGrid.add(emailLabel, 0, 0);
         loginGrid.add(emailTextField, 1, 0);
@@ -287,22 +286,22 @@ public class BankingApp extends Application {
         openAccountButton.setOnMouseExited((MouseEvent event) -> openAccountButton.setEffect(null));
         
         Button checkBalanceButton = new Button("Check Balance");
-        checkBalanceButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+        checkBalanceButton.setStyle("-fx-background-color: #8A2BE2; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
         checkBalanceButton.setOnMouseEntered((MouseEvent event) -> checkBalanceButton.setEffect(new Glow()));
         checkBalanceButton.setOnMouseExited((MouseEvent event) -> checkBalanceButton.setEffect(null));
         
         Button creditButton = new Button("Credit Money");
-        creditButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+        creditButton.setStyle("-fx-background-color: #006400; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
         creditButton.setOnMouseEntered((MouseEvent event) -> creditButton.setEffect(new Glow()));
         creditButton.setOnMouseExited((MouseEvent event) -> creditButton.setEffect(null));
         
         Button debitButton = new Button("Debit Money");
-        debitButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+        debitButton.setStyle("-fx-background-color: #8B0000; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
         debitButton.setOnMouseEntered((MouseEvent event) -> debitButton.setEffect(new Glow()));
         debitButton.setOnMouseExited((MouseEvent event) -> debitButton.setEffect(null));
         
         Button transferButton = new Button("Transfer");
-        transferButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
+        transferButton.setStyle("-fx-background-color: #FFA500; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
         transferButton.setOnMouseEntered((MouseEvent event) -> transferButton.setEffect(new Glow()));
         transferButton.setOnMouseExited((MouseEvent event) -> transferButton.setEffect(null));
         
@@ -337,9 +336,9 @@ public class BankingApp extends Application {
             TextField accNameField = new TextField();
             Label amount = new Label("Amount:");
             TextField amountField = new TextField();
-            Label pin = new Label("pin");
+            Label pin = new Label("Pin");
             PasswordField pinField= new PasswordField();
-            Button sumbitB = new Button("submit");
+            Button sumbitB = new Button("Submit");
 
     
             accName.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
@@ -426,9 +425,9 @@ public class BankingApp extends Application {
 
             Label amount = new Label("Amount:");
             TextField amountField = new TextField();
-            Label pin = new Label("pin");
+            Label pin = new Label("Pin");
             PasswordField pinField= new PasswordField();
-            Button sumbitB = new Button("submit");
+            Button sumbitB = new Button("Submit");
 
             amount.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
             amountField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
@@ -445,7 +444,7 @@ public class BankingApp extends Application {
             OAGrid.add(amountField, 1, 0);
             OAGrid.add(pin, 0, 1);
             OAGrid.add(pinField, 1, 1);
-            OAGrid.add(sumbitB,0,2);
+            OAGrid.add(sumbitB, 0, 2, 2, 1); 
 
             GridPane.setHalignment(sumbitB, HPos.CENTER);
 
@@ -487,7 +486,7 @@ public class BankingApp extends Application {
 
         debitButton.setOnAction(event -> {
             Stage openaccStage = new Stage();
-            openaccStage.setTitle("Credit Money");
+            openaccStage.setTitle("Debit Money");
             GridPane OAGrid = new GridPane();
             OAGrid.setAlignment(javafx.geometry.Pos.CENTER);
             OAGrid.setHgap(10);
@@ -497,9 +496,9 @@ public class BankingApp extends Application {
 
             Label amount = new Label("Amount:");
             TextField amountField = new TextField();
-            Label pin = new Label("pin");
+            Label pin = new Label("Pin");
             PasswordField pinField= new PasswordField();
-            Button sumbitB = new Button("submit");
+            Button sumbitB = new Button("Submit");
 
             amount.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
             amountField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
@@ -516,7 +515,7 @@ public class BankingApp extends Application {
             OAGrid.add(amountField, 1, 0);
             OAGrid.add(pin, 0, 1);
             OAGrid.add(pinField, 1, 1);
-            OAGrid.add(sumbitB,0,2);
+            OAGrid.add(sumbitB, 0, 2, 2, 1); 
 
             GridPane.setHalignment(sumbitB, HPos.CENTER);
 
@@ -569,9 +568,9 @@ public class BankingApp extends Application {
             TextField amountField = new TextField();
             Label name = new Label("Sender Email:");
             TextField nameField= new TextField();
-            Label pin = new Label("pin");
+            Label pin = new Label("Pin");
             PasswordField pinField= new PasswordField();
-            Button sumbitB = new Button("submit");
+            Button sumbitB = new Button("Submit");
 
             amount.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;");
             amountField.setStyle("-fx-font-size: 18px; -fx-pref-height: 40; -fx-border-color: blue; -fx-border-width: 2px;");
