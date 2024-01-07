@@ -623,7 +623,7 @@ public class BankingApp extends Application {
                     alert1.setTitle("Transaction Failure");
                     alert1.setHeaderText(null);
                     alert1.setContentText("Insufficient Balance");
-                    alert.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
+                    alert1.getDialogPane().lookup(".content.label").setStyle("-fx-text-fill: black; -fx-font-weight: bold; -fx-font-size: 18px; -fx-font-family: 'Frutiger'; -fx-alignment: center;");
                     alert1.getDialogPane().setPrefWidth(600);
                     alert1.getDialogPane().setPrefHeight(200);
                     alert1.showAndWait();
@@ -647,7 +647,7 @@ public class BankingApp extends Application {
     }
 });
     }
-    
+
     private boolean validateRegisterInput(String fullName, String email, String password) {
         return !fullName.isEmpty() && !email.isEmpty() && !password.isEmpty();
     }
