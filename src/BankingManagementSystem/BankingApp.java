@@ -647,6 +647,7 @@ public class BankingApp extends Application {
     }
 });
     }
+    
     private boolean validateRegisterInput(String fullName, String email, String password) {
         return !fullName.isEmpty() && !email.isEmpty() && !password.isEmpty();
     }
