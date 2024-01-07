@@ -305,7 +305,7 @@ public class BankingApp extends Application {
         transferButton.setOnMouseEntered((MouseEvent event) -> transferButton.setEffect(new Glow()));
         transferButton.setOnMouseExited((MouseEvent event) -> transferButton.setEffect(null));
         
-        Button backButton = new Button("Back");
+        Button backButton = new Button("Logout");
         backButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold; -fx-pref-width: 200px; -fx-pref-height: 60px;"); 
         backButton.setOnMouseEntered((MouseEvent event) -> backButton.setEffect(new Glow()));
         backButton.setOnMouseExited((MouseEvent event) -> backButton.setEffect(null));
